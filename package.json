@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@myriaddreamin/typst-ts-renderer": "0.5.5-rc7",
+    "@myriaddreamin/typst-ts-web-compiler": "0.5.5-rc7",
+    "@myriaddreamin/typst.ts": "0.5.5-rc7",
     "@types/pdfmake": "^0.2.11",
     "pdf-lib": "^1.17.1",
     "pdfmake": "^0.2.18",

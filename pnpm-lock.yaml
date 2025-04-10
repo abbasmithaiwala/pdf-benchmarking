@@ -8,6 +8,15 @@ importers:
 
   .:
     dependencies:
+      '@myriaddreamin/typst-ts-renderer':
+        specifier: 0.5.5-rc7
+        version: 0.5.5-rc7
+      '@myriaddreamin/typst-ts-web-compiler':
+        specifier: 0.5.5-rc7
+        version: 0.5.5-rc7
+      '@myriaddreamin/typst.ts':
+        specifier: 0.5.5-rc7
+        version: 0.5.5-rc7(@myriaddreamin/typst-ts-renderer@0.5.5-rc7)(@myriaddreamin/typst-ts-web-compiler@0.5.5-rc7)
       '@types/pdfmake':
         specifier: ^0.2.11
         version: 0.2.11
@@ -384,6 +393,23 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@myriaddreamin/typst-ts-renderer@0.5.5-rc7':
+    resolution: {integrity: sha512-DVMr2dVVhvMcKhRvveetdhPMwvr0Ck5hHGPAOmf0Z6l5QKLUduJde+0ydo+SHifPsd6N67ZJnH5bNxHsO7hIhQ==}
+
+  '@myriaddreamin/typst-ts-web-compiler@0.5.5-rc7':
+    resolution: {integrity: sha512-dFS47UwVcOscGx6+9Ytn/QAKhHcuuG6K+zkAJO0Iw4j+4OHpu+VbZLUh3+6M6Bfl6TzzQ3fsBlgqgVF6UtfNug==}
+
+  '@myriaddreamin/typst.ts@0.5.5-rc7':
+    resolution: {integrity: sha512-ATGhPQSoIAThRZlqcdBkCROso7UQBV4vEmE8FQZYDcOQ12JpbkJUMop/3UV0kdRhJ1XzbJxckztFxWUmDbF9/g==}
+    peerDependencies:
+      '@myriaddreamin/typst-ts-renderer': ^0.5.5-rc7
+      '@myriaddreamin/typst-ts-web-compiler': ^0.5.5-rc7
+    peerDependenciesMeta:
+      '@myriaddreamin/typst-ts-renderer':
+        optional: true
+      '@myriaddreamin/typst-ts-web-compiler':
+        optional: true
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -907,6 +933,9 @@ packages:
   iconv-lite@0.6.3:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
     engines: {node: '>=0.10.0'}
+
+  idb@7.1.1:
+    resolution: {integrity: sha512-gchesWBzyvGHRO9W8tzUWFDycow5gwjvFKfyV9FF32Y7F50yZMp7mP+T2mJIWFx49zicqyC4uefHM17o6xKIVQ==}
 
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
@@ -1580,6 +1609,17 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
+  '@myriaddreamin/typst-ts-renderer@0.5.5-rc7': {}
+
+  '@myriaddreamin/typst-ts-web-compiler@0.5.5-rc7': {}
+
+  '@myriaddreamin/typst.ts@0.5.5-rc7(@myriaddreamin/typst-ts-renderer@0.5.5-rc7)(@myriaddreamin/typst-ts-web-compiler@0.5.5-rc7)':
+    dependencies:
+      idb: 7.1.1
+    optionalDependencies:
+      '@myriaddreamin/typst-ts-renderer': 0.5.5-rc7
+      '@myriaddreamin/typst-ts-web-compiler': 0.5.5-rc7
+
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
       '@nodelib/fs.stat': 2.0.5
@@ -2145,6 +2185,8 @@ snapshots:
   iconv-lite@0.6.3:
     dependencies:
       safer-buffer: 2.1.2
+
+  idb@7.1.1: {}
 
   ignore@5.3.2: {}
 
