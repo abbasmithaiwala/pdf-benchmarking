@@ -3,6 +3,7 @@ import './App.css';
 import { generatePdf, openPdfInNewTab, downloadPdf, formatTime } from './utils/pdfMakeService';
 import { generatePdfWithPdfLib } from './utils/pdfLibService';
 import { generatePdfWithTypst } from './utils/typstService';
+import { generatePdfWithPdfMe } from './utils/pdfMeService';
 
 interface PdfGenerationMetrics {
   dataGenerationTime: number;
@@ -278,11 +279,64 @@ const PdfCards: FC = () => {
     }
   };
 
+  const handlePdfMeGenerate = async (
+    rowCount: number,
+    shouldDownload: boolean,
+    viewType: 'newTab' | 'inline'
+  ): Promise<{ metrics: PdfGenerationMetrics, inlinePdfUrl?: string }> => {
+    try {
+      const result = await generatePdfWithPdfMe(rowCount);
+      let inlinePdfUrl: string | undefined;
+      
+      if (shouldDownload) {
+        downloadPdf(result.pdfData, `pdfme-report-${rowCount}-rows.pdf`);
+      } else if (viewType === 'newTab') {
+        openPdfInNewTab(result.pdfData);
+      } else if (viewType === 'inline') {
+        // Create a blob URL for inline display
+        const byteCharacters = atob(result.pdfData);
+        const byteNumbers = new Array(byteCharacters.length);
+        
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'application/pdf' });
+        inlinePdfUrl = URL.createObjectURL(blob);
+      }
+      
+      return { 
+        metrics: result.metrics,
+        inlinePdfUrl
+      };
+    } catch (error) {
+      console.error('Error generating PDF with PDFme:', error);
+      throw error;
+    }
+  };
+
   return (
-    <div className="card-container">
-      <PdfCard label="PdfMake" onGenerateClick={handlePdfMakeGenerate} />
-      <PdfCard label="Typst" onGenerateClick={handleTypstGenerate} />
-      <PdfCard label="PdfLib" onGenerateClick={handlePdfLibGenerate} />
+    <div className="pdf-cards">
+      <h1>PDF Generation Benchmark</h1>
+      <div className="cards-container">
+        <PdfCard 
+          label="PdfMake" 
+          onGenerateClick={handlePdfMakeGenerate}
+        />
+        <PdfCard 
+          label="PDF-Lib" 
+          onGenerateClick={handlePdfLibGenerate}
+        />
+        <PdfCard 
+          label="Typst" 
+          onGenerateClick={handleTypstGenerate}
+        />
+        <PdfCard 
+          label="PDFme" 
+          onGenerateClick={handlePdfMeGenerate}
+        />
+      </div>
     </div>
   );
 };
