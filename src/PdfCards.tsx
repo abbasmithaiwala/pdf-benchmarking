@@ -1,6 +1,7 @@
 import { FC, useState, useRef } from 'react';
 import './App.css';
 import { generatePdf, openPdfInNewTab, downloadPdf, formatTime } from './utils/pdfMakeService';
+import { generatePdfWithPdfLib } from './utils/pdfLibService';
 
 interface PdfGenerationMetrics {
   dataGenerationTime: number;
@@ -202,11 +203,48 @@ const PdfCards: FC = () => {
     }
   };
 
+  const handlePdfLibGenerate = async (
+    rowCount: number,
+    shouldDownload: boolean,
+    viewType: 'newTab' | 'inline'
+  ): Promise<{ metrics: PdfGenerationMetrics, inlinePdfUrl?: string }> => {
+    try {
+      const result = await generatePdfWithPdfLib(rowCount);
+      let inlinePdfUrl: string | undefined;
+      
+      if (shouldDownload) {
+        downloadPdf(result.pdfData, `pdflib-report-${rowCount}-rows.pdf`);
+      } else if (viewType === 'newTab') {
+        openPdfInNewTab(result.pdfData);
+      } else if (viewType === 'inline') {
+        // Create a blob URL for inline display
+        const byteCharacters = atob(result.pdfData);
+        const byteNumbers = new Array(byteCharacters.length);
+        
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'application/pdf' });
+        inlinePdfUrl = URL.createObjectURL(blob);
+      }
+      
+      return { 
+        metrics: result.metrics,
+        inlinePdfUrl
+      };
+    } catch (error) {
+      console.error('Error generating PDF with PdfLib:', error);
+      throw error;
+    }
+  };
+
   return (
     <div className="card-container">
       <PdfCard label="PdfMake" onGenerateClick={handlePdfMakeGenerate} />
       <PdfCard label="Typst" />
-      <PdfCard label="PdfLib" />
+      <PdfCard label="PdfLib" onGenerateClick={handlePdfLibGenerate} />
     </div>
   );
 };
