@@ -318,8 +318,7 @@ const PdfCards: FC = () => {
 
   return (
     <div className="pdf-cards">
-      <h1>PDF Generation Benchmark</h1>
-      <div className="cards-container">
+      <div className="cards-row">
         <PdfCard 
           label="PdfMake" 
           onGenerateClick={handlePdfMakeGenerate}

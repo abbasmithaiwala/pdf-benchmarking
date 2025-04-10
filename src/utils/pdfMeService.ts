@@ -15,33 +15,67 @@ interface PdfGenerationResult {
   metrics: PdfGenerationMetrics;
 }
 
+// Worker pool for reusing workers
+const workerPool: Worker[] = [];
+const MAX_POOL_SIZE = 2; // Adjust based on performance testing
+
+// Cache for PDF results to avoid regenerating the same reports
+const pdfCache = new Map<number, PdfGenerationResult>();
+
+/**
+ * Get a worker from the pool or create a new one
+ */
+function getWorker(): Worker {
+  if (workerPool.length > 0) {
+    return workerPool.pop()!;
+  }
+  
+  return new Worker(
+    new URL('../workers/pdfMeWorker.ts', import.meta.url),
+    { type: 'module' }
+  );
+}
+
+/**
+ * Return a worker to the pool
+ */
+function releaseWorker(worker: Worker): void {
+  if (workerPool.length < MAX_POOL_SIZE) {
+    workerPool.push(worker);
+  } else {
+    worker.terminate();
+  }
+}
+
 /**
  * Generate a PDF with the specified number of rows using PDFme
  * @param rowCount Number of data rows to include in the PDF
  * @returns Promise that resolves to an object containing the PDF data and performance metrics
  */
 export function generatePdfWithPdfMe(rowCount: number): Promise<PdfGenerationResult> {
+  // Check if result is in cache
+  if (pdfCache.has(rowCount)) {
+    return Promise.resolve(pdfCache.get(rowCount)!);
+  }
+  
   const workerStartTime = performance.now();
   
   return new Promise((resolve, reject) => {
-    // Create a new worker
-    const worker = new Worker(
-      new URL('../workers/pdfMeWorker.ts', import.meta.url),
-      { type: 'module' }
-    );
+    // Get a worker from the pool
+    const worker = getWorker();
 
     // Handle messages from the worker
     worker.onmessage = (event) => {
       const workerEndTime = performance.now();
       const { success, data, error, metrics } = event.data;
       
-      // Terminate the worker when done
-      worker.terminate();
+      // Release the worker instead of terminating
+      releaseWorker(worker);
       
       if (success) {
         const totalProcessTime = workerEndTime - workerStartTime;
         
-        resolve({
+        const result = {
           pdfData: data,
           metrics: {
             ...metrics,
@@ -49,7 +83,12 @@ export function generatePdfWithPdfMe(rowCount: number): Promise<PdfGenerationRes
             workerEndTime,
             totalProcessTime
           }
-        });
+        };
+        
+        // Store result in cache
+        pdfCache.set(rowCount, result);
+        
+        resolve(result);
       } else {
         reject(new Error(error || 'PDF generation with PDFme failed'));
       }
@@ -57,11 +96,26 @@ export function generatePdfWithPdfMe(rowCount: number): Promise<PdfGenerationRes
 
     // Handle worker errors
     worker.onerror = (error) => {
-      worker.terminate();
+      releaseWorker(worker);
       reject(new Error(`PDFme worker error: ${error.message}`));
     };
 
     // Send the row count to the worker
     worker.postMessage({ rowCount });
   });
+} 
+
+/**
+ * Clear the PDF cache
+ */
+export function clearPdfCache(): void {
+  pdfCache.clear();
+}
+
+/**
+ * Cleanup worker pool - call this when the component unmounts
+ */
+export function cleanupWorkerPool(): void {
+  workerPool.forEach(worker => worker.terminate());
+  workerPool.length = 0;
 } 

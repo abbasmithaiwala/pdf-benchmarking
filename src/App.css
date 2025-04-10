@@ -40,22 +40,63 @@
   gap: 20px;
 }
 
+.cards-row {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  gap: 20px;
+  padding: 15px 5px;
+  scrollbar-width: thin;
+  scrollbar-color: #4a76a8 #f1f1f1;
+  margin-bottom: 20px;
+}
+
+.cards-row::-webkit-scrollbar {
+  height: 8px;
+}
+
+.cards-row::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.cards-row::-webkit-scrollbar-thumb {
+  background: #4a76a8;
+  border-radius: 10px;
+}
+
+.cards-row::-webkit-scrollbar-thumb:hover {
+  background: #3a5d85;
+}
+
+.pdf-cards h1 {
+  margin-bottom: 2rem;
+  color: #2c3e50;
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  background: linear-gradient(45deg, #3a5d85, #4a76a8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding-bottom: 0.5rem;
+}
+
 .card {
   padding: 2em;
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
+  border: none;
+  border-radius: 16px;
   background-color: white;
   min-width: 300px;
-  width: 100%;
-  max-width: 450px;
-  margin: 1em;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s, box-shadow 0.2s;
+  flex: 0 0 auto;
+  max-width: 300px;
+  margin: 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
 }
 
 .card h2 {
@@ -65,24 +106,42 @@
   font-size: 1.75rem;
   font-weight: 600;
   text-align: center;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.card h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #4a76a8, #3a5d85);
+  border-radius: 3px;
 }
 
 .card button {
-  background-color: #4a76a8;
+  background: linear-gradient(135deg, #4a76a8, #3a5d85);
   color: white;
   border: none;
   padding: 12px 24px;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
   width: 100%;
   font-size: 1rem;
   margin-top: 0.5rem;
+  position: relative;
+  overflow: hidden;
 }
 
 .card button:hover {
-  background-color: #3a5d85;
+  background: linear-gradient(135deg, #5883b3, #446995);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(74, 118, 168, 0.3);
 }
 
 .card button:disabled {
@@ -138,9 +197,10 @@
 .metrics {
   margin-top: 20px;
   padding: 15px;
-  background-color: #f0f7ff;
-  border-radius: 8px;
+  background-color: #f8fafc;
+  border-radius: 12px;
   border-left: 4px solid #4a76a8;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .metrics h3 {
@@ -191,9 +251,10 @@
   flex-direction: column;
   gap: 15px;
   background-color: #f8fafc;
-  padding: 15px;
-  border-radius: 8px;
-  border: 1px solid #edf2f7;
+  padding: 18px;
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .options-container h3 {
