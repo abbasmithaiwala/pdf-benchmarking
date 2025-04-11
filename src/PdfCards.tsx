@@ -1,4 +1,4 @@
-import { FC, useState, useRef } from 'react';
+import { FC, useState } from 'react';
 import './App.css';
 import { generatePdf, openPdfInNewTab, downloadPdf, formatTime } from './utils/pdfMakeService';
 import { generatePdfWithPdfLib } from './utils/pdfLibService';

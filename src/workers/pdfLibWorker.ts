@@ -260,14 +260,9 @@ self.addEventListener('message', async (event) => {
   const { rowCount } = event.data;
   
   try {
-    // Track total time
-    const totalStartTime = performance.now();
     
     // Create PDF
     const result = await createPdf(rowCount);
-    
-    // Calculate total time
-    const totalTime = performance.now() - totalStartTime;
     
     // Send the base64 data back to the main thread with timing metrics
     self.postMessage({ 

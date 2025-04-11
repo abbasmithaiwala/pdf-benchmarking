@@ -71,7 +71,6 @@ export function generatePdf(rowCount: number): Promise<PdfGenerationResult> {
  * @param base64Data PDF data as base64 string
  */
 export function openPdfInNewTab(base64Data: string): void {
-  const pdfUrl = `data:application/pdf;base64,${base64Data}`;
   
   // Create a blob from the base64 data for better browser compatibility
   const byteCharacters = atob(base64Data);

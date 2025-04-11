@@ -105,8 +105,6 @@ const createBaseSchema = () => [
 
 // Create a template with efficient schema generation
 function createTemplate(rowCount: number, maxRowsPerPage: number): { template: Template; inputs: Record<string, string>[]; } {
-  // Check if template is already in cache
-  const cacheKey = `${rowCount}_${maxRowsPerPage}`;
   const cachedTemplate = templateCache.get(rowCount);
   
   if (cachedTemplate && cachedTemplate.maxRows === maxRowsPerPage) {
@@ -253,7 +251,6 @@ async function createPdf(rowCount: number): Promise<{ pdfData: string; metrics: 
   
   // Generate data separately to measure time
   const dataStartTime = performance.now();
-  const data = generateDummyData(rowCount);
   const dataGenerationTime = performance.now() - dataStartTime;
   
   const maxRowsPerPage = 30;

@@ -210,16 +210,11 @@ self.addEventListener('message', async (event) => {
   const { rowCount } = event.data;
   
   try {
-    // Track total time
-    const totalStartTime = performance.now();
     
     console.log(`Starting PDF generation with ${rowCount} rows`);
     
     // Create PDF
     const result = await createPdf(rowCount);
-    
-    // Calculate total time
-    const totalTime = performance.now() - totalStartTime;
     
     console.log("PDF generation complete, sending back to main thread");
     

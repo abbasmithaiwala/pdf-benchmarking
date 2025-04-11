@@ -77,6 +77,7 @@
   text-align: center;
   background: linear-gradient(45deg, #3a5d85, #4a76a8);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   padding-bottom: 0.5rem;
 }
