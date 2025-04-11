@@ -91,7 +91,7 @@ const PdfCard: FC<PdfCardProps> = ({ label, onGenerateClick }) => {
                   checked={viewType === 'newTab'}
                   onChange={() => setViewType('newTab')}
                 />
-                New Tab
+                <span>New Tab</span>
               </label>
               <label>
                 <input
@@ -100,7 +100,7 @@ const PdfCard: FC<PdfCardProps> = ({ label, onGenerateClick }) => {
                   checked={viewType === 'inline'}
                   onChange={() => setViewType('inline')}
                 />
-                Inline
+                <span>Inline</span>
               </label>
             </div>
           </div>
