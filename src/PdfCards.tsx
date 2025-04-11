@@ -62,7 +62,6 @@ const PdfCard: FC<PdfCardProps> = ({ label, onGenerateClick }) => {
             id={`rowCount-${label}`}
             type="number"
             min="1"
-            max="10000"
             value={rowCount}
             onChange={(e) => setRowCount(parseInt(e.target.value) || 10)}
           />
